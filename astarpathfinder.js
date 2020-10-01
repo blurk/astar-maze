@@ -1,25 +1,26 @@
 function AStarPathFinder(map, start, end, allowDiagonals) {
 	this.map = map;
-	this.lastCheckedNode = start;
+	this.lastCheckedNode = start; //keep track of previous node
 	this.openSet = [];
-	// openSet starts with beginning node only
-	this.openSet.push(start);
 	this.closedSet = [];
-	this.start = start;
-	this.end = end;
+	// add start node to OPEN when initialing maze
+	this.openSet.push(start);
+
+	this.start = start; //[0][0] as default
+	this.end = end; // [cols-1][rows- 1] as default
+
 	this.allowDiagonals = allowDiagonals;
 
-	//This function returns a measure of aesthetic preference for
-	//use when ordering the openSet. It is used to priorities
-	//between equal standard heuristic scores. It can therefore
-	//be anything you like without affecting the ability to find
-	//a minimum cost path.
+	/* Will return a measure of aesthetic preference for
+	use when ordering the openSet. It is used to priorities
+	between equal standard heuristic scores. 
+	In conclusion: make the path look cool when allowDiagonals = true */
 
 	this.visualDist = function (a, b) {
 		return dist(a.i, a.j, b.i, b.j);
 	};
 
-	// An educated guess of how far it is between two points
+	// function for implementing the smart of this algorithm: calculate distance of 2 points
 
 	this.heuristic = function (a, b) {
 		var d;
@@ -59,13 +60,9 @@ function AStarPathFinder(map, start, end, allowDiagonals) {
 					if (this.openSet[i].g > this.openSet[winner].g) {
 						winner = i;
 					}
-					//if we're using Manhattan distances then also break ties
-					//of the known distance measure by using the visual heuristic.
-					//This ensures that the search concentrates on routes that look
-					//more direct. This makes no difference to the actual path distance
-					//but improves the look for things like games or more closely
-					//approximates the real shortest path if using grid sampled data for
-					//planning natural paths.
+					/* Using Manhattan distances then also break ties
+					of the known distance measure by using the visual heuristic.
+					This will make the route when allowDiagonals = true looks correct. && make no difference to the actual path's distance*/
 					if (!this.allowDiagonals) {
 						if (
 							this.openSet[i].g == this.openSet[winner].g &&
@@ -79,7 +76,7 @@ function AStarPathFinder(map, start, end, allowDiagonals) {
 			var current = this.openSet[winner];
 			this.lastCheckedNode = current;
 
-			// Did I finish?
+			// If done
 			if (current === this.end) {
 				console.log('DONE!');
 				return 1;
@@ -111,6 +108,7 @@ function AStarPathFinder(map, start, end, allowDiagonals) {
 					//calculate cost function f(n)
 					neighbor.g = tempG;
 					neighbor.h = this.heuristic(neighbor, end);
+
 					if (!allowDiagonals) {
 						neighbor.vh = this.visualDist(neighbor, end);
 					}
