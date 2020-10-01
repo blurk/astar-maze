@@ -6,4 +6,6 @@
 
 ## Thuật toán A\* được tham khảo và phát triển từ [Coding Train](https://www.youtube.com/watch?v=aKYlikFAV4k), [Computerphile](https://www.youtube.com/watch?v=ySN5Wnu88nE) và [javid9x](https://www.youtube.com/watch?v=icZj67PTFhc&t=1s)
 
+## Code tham khảo [tại đây](https://github.com/CodingTrain/AStar)
+
 ### [Online demo](https://blurk.github.io/astar-maze/)
